@@ -56,3 +56,6 @@ El comparativo anual de 2025 está marcado como parcial: los registros terminan 
 La alerta DEMO se observó activa a las 23:15:47 y recuperada a las 23:16:37 del 4 de noviembre de 2026 (Colombia). `logs/docker/alerta_demo.json` conserva las muestras de la API; las capturas 14 y 15 muestran ambos estados. La demostración acredita el mecanismo con datos reproducidos, sin convertirlos en telemetría actual.
 
 En el nivel de subcódigo, el acumulado se calcula sobre la selección y conserva los filtros externos. Para interpretar el Pareto se comparan motivos ordenados por minutos; expandir los códigos padre agrupa la presentación. Se verificaron los niveles de código, subcódigo y combinación código/subcódigo. El cambio de contexto no modifica los 16.452 paros ni sus 502.924,10 minutos conciliados con SQL.
+
+
+DBeaver quedó conectado al PostgreSQL de Docker. La primera consulta de `09_sustentacion.sql` se ejecutó en su editor y mostró las siete cifras de conciliación; el pantallazo está en `evidencias/docker/17_dbeaver_conciliacion.png`. Las otras cuatro consultas se validaron por backend, sin atribuirles ejecución en la interfaz. El recorrido de sustentación está en `SUSTENTACION.md`.

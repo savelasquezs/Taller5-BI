@@ -29,7 +29,7 @@ Las contraseñas están solo en `.env`, excluido de Git y del contexto de constr
 
 ## Power BI y DBeaver
 
-Instalar DBeaver Community en Windows; puede incluir Java. Conectar con la fila de administración anterior para revisar DDL y ejecutar `08_consultas_analiticas.sql`.
+DBeaver Community quedó configurado para la conexión local de administración; su prueba confirmó PostgreSQL 17.6 y JDBC 42.7.13. El perfil no almacena la contraseña: puede pedir `POSTGRES_PASSWORD` de `.env` al reconectar. Se ejecutó en el editor la primera consulta de `09_sustentacion.sql`: siete resultados de conciliación coinciden con la base; captura en `EVIDENCIAS.md`. Las otras consultas se validaron por backend, sin atribuirles ejecución en la interfaz. Para la demostración, seguir `SUSTENTACION.md` y ejecutar `09_sustentacion.sql` o `08_consultas_analiticas.sql`.
 
 Power BI también se ejecuta en Windows. Instalar PostgreSQL ODBC Unicode x64, crear el DSN de usuario **Taller5Docker** con el usuario de lectura y abrir `powerbi/Taller5.pbip`; pulsar **Actualizar**. En este equipo `python configurar_cliente.py` utiliza el controlador ya extraído en `%USERPROFILE%/Taller5Datos/ODBC`. En otro equipo crear el mismo DSN con el administrador ODBC de 64 bits.
 
@@ -75,12 +75,13 @@ Para restaurar, crear otro proyecto/volumen con una base vacía, copiar allí el
 
 ## Documentación y entrega
 
-El entregable indicado en el enunciado es `BI_ProyectoFinal_Apellido1_Apellido2.pdf`, con los nombres de ambos integrantes, el enlace a este repositorio, el desarrollo de los requisitos y las capturas. El PDF se entrega en la plataforma académica. El archivo `powerbi/Taller5_Docker.pbix` puede adjuntarse allí como complemento; el proyecto Power BI editable ya está versionado en este repositorio. Las capturas de `EVIDENCIAS.md` están en la carpeta local y se incorporan al informe; no se publican aquí.
+El entregable indicado en el enunciado es `BI_ProyectoFinal_Apellido1_Apellido2.pdf`, con identificación del autor, el enlace a este repositorio, el desarrollo de los requisitos y las capturas. El trabajo corresponde únicamente a **Santiago Velásquez Serna**; aunque el enunciado plantea parejas, no se atribuye participación a una segunda persona. El PDF se entrega en la plataforma académica. El archivo `powerbi/Taller5_Docker.pbix` puede adjuntarse allí como complemento; el proyecto Power BI editable ya está versionado en este repositorio. Las capturas de `EVIDENCIAS.md` están en la carpeta local y se incorporan al informe; no se publican aquí.
 
+- `SUSTENTACION.md`: recorrido práctico de 5–8 minutos y respuestas breves.
 - `DOCUMENTACION.md`: usuarios, modelo, matriz de bus, indicadores, seguridad y evolución a PLC/SCADA.
 - `docs/diccionario_datos.csv`: tipos, llaves, origen y transformación de cada campo analítico.
 - `DECISIONES_ETL.md`: reglas y sus efectos; `INVESTIGACION_OEE.md`: evidencia de los parámetros históricos contradictorios.
 - `EVIDENCIAS.md`: capturas y descripciones breves para el informe del estudiante.
 - `08_consultas_analiticas.sql`: producción, Pareto, comparativos, disponibilidad, jerarquía y anomalías.
 
-Las cantidades mínimas ausentes del texto pegado del enunciado requieren contrastar el original íntegro antes de afirmar cumplimiento completo. OEE real continúa pendiente de unidades buenas/rechazadas y parámetros con vigencia respaldada. Ambos integrantes deben aportar y dominar su trabajo; no se simula participación en Git.
+Las cantidades mínimas ausentes del texto pegado del enunciado requieren contrastar el original íntegro antes de afirmar cumplimiento completo. OEE real continúa pendiente de unidades buenas/rechazadas y parámetros con vigencia respaldada. El autor debe dominar el flujo completo; no se simulan aportes de otra persona en Git.

@@ -68,3 +68,8 @@ Las claves están en `.env`, excluido de Git. Los permisos de carga incluyen ref
 El Excel descargado nuevamente coincide byte a byte con la fuente del proyecto (SHA-256 `c7d7eabbd55844757c2be07bd61efcee9eb5e0b03aaf9fd76b798737a92d5c55`). Los PDF difieren en bytes, pero sus siete páginas tienen el mismo texto, imágenes decodificadas, contenido gráfico y tamaño; no hay anotaciones ni adjuntos. No se encontraron datos ni instrucciones nuevos en estos dos archivos.
 
 La importación Docker quedó verificada en el motor nativo de Power BI: ocho tablas, 36 medidas, once relaciones y totales 4.809/16.452. También se comprobaron el filtro de máquina, el detalle por subcódigo y el comparativo anual; 2025 está identificado como parcial. Evidencia: `logs/docker/verificacion_powerbi.json`. El archivo final `powerbi/Taller5_Docker.pbix` ya se guardó y se verificó también leyendo su modelo binario. `Taller5.pbix` se conserva como antecedente de la instalación anterior.
+
+
+## DBeaver · 5 de noviembre de 2026
+
+Se configuró la conexión local a `localhost:55440`, base `taller5`, usuario `taller5`; la prueba confirmó PostgreSQL 17.6 con JDBC 42.7.13. El perfil no almacena la contraseña. Se ejecutó la primera consulta de `09_sustentacion.sql` en el editor y se observaron siete filas: 4.809 producciones, 16.452 paros, 378.727 pacas, 38.047,35 horas, 502.924,10 minutos, 84,13 % de disponibilidad reconstruida y cero registros con OEE completo. Captura: `evidencias/docker/17_dbeaver_conciliacion.png`. Las otras cuatro consultas se validaron por backend; no se afirma ejecución de ellas en la interfaz. El recorrido práctico está en `SUSTENTACION.md`.

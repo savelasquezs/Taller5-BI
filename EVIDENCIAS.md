@@ -106,3 +106,10 @@ El año 2025 tiene 25.496 pacas frente a 137.953 en 2024: −81,5 %. Se indica *
 En el nivel de subcódigo, el acumulado se calcula sobre la selección y conserva los filtros externos. Para interpretar el Pareto se comparan motivos ordenados por minutos; expandir los códigos padre agrupa la presentación. Los totales permanecen conciliados con SQL.
 
 ![Desglose por subcódigo](evidencias/docker/powerbi/05_desglose_subcodigos.png)
+
+
+## DBeaver · conciliación desde el editor
+
+La conexión a PostgreSQL 17.6 con JDBC 42.7.13 quedó activa. La primera consulta de `09_sustentacion.sql` devolvió siete cifras: 4.809 producciones, 16.452 paros, 378.727 pacas, 38.047,35 horas, 502.924,10 minutos, 84,13 % de disponibilidad reconstruida y cero registros con OEE completo. La captura acredita esta consulta; las otras cuatro se verificaron por backend.
+
+![Conciliación ejecutada en DBeaver](evidencias/docker/17_dbeaver_conciliacion_limpia.png)
