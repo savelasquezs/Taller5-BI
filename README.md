@@ -1,6 +1,6 @@
 # Taller 5 · Producción y paros
 
-Repositorio privado de entrega: [savelasquezs/Taller5-BI](https://github.com/savelasquezs/Taller5-BI). Acceso sujeto a la invitación del propietario.
+Repositorio público de entrega: [savelasquezs/Taller5-BI](https://github.com/savelasquezs/Taller5-BI). Se puede revisar sin invitación ni iniciar sesión.
 
 PostgreSQL 17.6, Python 3.14, Grafana 13.2.3 y Power BI. La fuente es el Excel histórico de Vinilos_1 a Vinilos_4. Disponibilidad y productividad se reconstruyen con reglas documentadas; no se inventan cantidades buenas ni vigencias de parámetros para completar OEE.
 
@@ -74,6 +74,8 @@ docker compose cp db:/tmp/taller5.dump ./respaldo.dump
 Para restaurar, crear otro proyecto/volumen con una base vacía, copiar allí el archivo y ejecutar `pg_restore -U taller5 -d <base_vacia> --exit-on-error /tmp/taller5.dump`. No restaurar encima de las tablas ya inicializadas. El respaldo contiene datos personales: acceso privado y almacenamiento protegido.
 
 ## Documentación y entrega
+
+El entregable indicado en el enunciado es `BI_ProyectoFinal_Apellido1_Apellido2.pdf`, con los nombres de ambos integrantes, el enlace a este repositorio, el desarrollo de los requisitos y las capturas. El PDF se entrega en la plataforma académica. El archivo `powerbi/Taller5_Docker.pbix` puede adjuntarse allí como complemento; el proyecto Power BI editable ya está versionado en este repositorio. Las capturas de `EVIDENCIAS.md` están en la carpeta local y se incorporan al informe; no se publican aquí.
 
 - `DOCUMENTACION.md`: usuarios, modelo, matriz de bus, indicadores, seguridad y evolución a PLC/SCADA.
 - `docs/diccionario_datos.csv`: tipos, llaves, origen y transformación de cada campo analítico.
