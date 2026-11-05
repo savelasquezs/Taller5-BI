@@ -1,0 +1,206 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "d5fc974dbb63c55efc88",
+  "position": {
+    "x": 30,
+    "y": 390,
+    "z": 5430,
+    "height": 420,
+    "width": 1540,
+    "tabOrder": 5430
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Revisión mensual por máquina — valores nominales, no OEE'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#12304A'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimFecha"
+                    }
+                  },
+                  "Property": "periodo"
+                }
+              },
+              "queryRef": "DimFecha.periodo",
+              "nativeQueryRef": "periodo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimMaquina"
+                    }
+                  },
+                  "Property": "maquina"
+                }
+              },
+              "queryRef": "DimMaquina.maquina",
+              "nativeQueryRef": "maquina"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactProduccion"
+                    }
+                  },
+                  "Property": "Registros"
+                }
+              },
+              "queryRef": "FactProduccion.Registros",
+              "nativeQueryRef": "Registros"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactProduccion"
+                    }
+                  },
+                  "Property": "Registros con parámetros"
+                }
+              },
+              "queryRef": "FactProduccion.Registros con parámetros",
+              "nativeQueryRef": "Registros con parámetros"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactProduccion"
+                    }
+                  },
+                  "Property": "Registros nominales evaluables"
+                }
+              },
+              "queryRef": "FactProduccion.Registros nominales evaluables",
+              "nativeQueryRef": "Registros nominales evaluables"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactProduccion"
+                    }
+                  },
+                  "Property": "Nominal superior al 100 %"
+                }
+              },
+              "queryRef": "FactProduccion.Nominal superior al 100 %",
+              "nativeQueryRef": "Nominal superior al 100 %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactProduccion"
+                    }
+                  },
+                  "Property": "Rendimiento nominal diagnóstico %"
+                }
+              },
+              "queryRef": "FactProduccion.Rendimiento nominal diagnóstico %",
+              "nativeQueryRef": "Rendimiento nominal diagnóstico %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactProduccion"
+                    }
+                  },
+                  "Property": "Disponibilidad %"
+                }
+              },
+              "queryRef": "FactProduccion.Disponibilidad %",
+              "nativeQueryRef": "Disponibilidad %"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

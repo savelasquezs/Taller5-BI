@@ -1,0 +1,87 @@
+name: taller5
+
+services:
+  db:
+    image: postgres:17.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: taller5
+      POSTGRES_USER: taller5
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD en .env}
+      ETL_PASSWORD: ${ETL_PASSWORD:?Configure ETL_PASSWORD en .env}
+      BI_PASSWORD: ${BI_PASSWORD:?Configure BI_PASSWORD en .env}
+      TZ: America/Bogota
+    ports:
+      - "127.0.0.1:${DB_PORT:-55440}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/inicializar_db.sh:/docker-entrypoint-initdb.d/00-inicializar.sh:ro
+      - ./01_esquema_produccion.sql:/sql/01.sql:ro
+      - ./02_catalogos.sql:/sql/02.sql:ro
+      - ./05_modelo_analitico.sql:/sql/05.sql:ro
+      - ./07_demo.sql:/sql/07.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U taller5 -d taller5"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  etl:
+    build: .
+    restart: unless-stopped
+    environment:
+      PGHOST: db
+      PGDATABASE: taller5
+      PGUSER: taller5_etl
+      PGPASSWORD: ${ETL_PASSWORD}
+      DATABASE_URL: "host=db dbname=taller5 user=taller5_etl"
+      EXCEL_PATH: /datos/fuente.xlsm
+      LOG_DIR: /app/logs
+      ETL_INTERVAL_SECONDS: ${ETL_INTERVAL_SECONDS:-300}
+      TZ: America/Bogota
+    volumes:
+      - "${EXCEL_PATH:-./SEGUIMIENTO TEMPERAS Y VINILOS Actividad.xlsm}:/datos/fuente.xlsm:ro"
+      - ${LOG_DIR_HOST:-./logs/docker}:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:13.2.3
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Configure GRAFANA_PASSWORD en .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      BI_PASSWORD: ${BI_PASSWORD}
+      TZ: America/Bogota
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3002}:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana:/var/lib/grafana/dashboards:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  demo:
+    build: .
+    profiles: [demo]
+    restart: unless-stopped
+    command: ["python", "reproducir_demo.py"]
+    environment:
+      DATABASE_URL: "host=db dbname=taller5 user=taller5_etl"
+      PGPASSWORD: ${ETL_PASSWORD}
+      DEMO_INTERVAL_SECONDS: ${DEMO_INTERVAL_SECONDS:-60}
+      TZ: America/Bogota
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  grafana_data:

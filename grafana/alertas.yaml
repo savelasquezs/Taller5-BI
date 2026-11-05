@@ -1,0 +1,177 @@
+{
+  "apiVersion": 1,
+  "groups": [
+    {
+      "orgId": 1,
+      "name": "Taller5-supervision",
+      "folder": "Taller 5",
+      "interval": "1m",
+      "rules": [
+        {
+          "uid": "taller5-etl-retrasado",
+          "title": "ETL sin actualizar por más de 15 minutos",
+          "condition": "C",
+          "data": [
+            {
+              "refId": "A",
+              "relativeTimeRange": {
+                "from": 900,
+                "to": 0
+              },
+              "datasourceUid": "taller5-postgres",
+              "model": {
+                "refId": "A",
+                "datasource": {
+                  "type": "grafana-postgresql-datasource",
+                  "uid": "taller5-postgres"
+                },
+                "rawSql": "SELECT extract(epoch FROM(now()-fin))/60 AS minutos FROM estado_etl",
+                "format": "table",
+                "rawQuery": true,
+                "editorMode": "code"
+              }
+            },
+            {
+              "refId": "B",
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "B",
+                "type": "reduce",
+                "expression": "A",
+                "reducer": "last",
+                "settings": {
+                  "mode": "dropNN"
+                }
+              }
+            },
+            {
+              "refId": "C",
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "C",
+                "type": "threshold",
+                "expression": "B",
+                "conditions": [
+                  {
+                    "type": "query",
+                    "evaluator": {
+                      "type": "gt",
+                      "params": [
+                        15
+                      ]
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "reducer": {
+                      "type": "last",
+                      "params": []
+                    },
+                    "query": {
+                      "params": [
+                        "C"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "noDataState": "Alerting",
+          "execErrState": "Error",
+          "for": "2m",
+          "annotations": {
+            "summary": "ETL sin actualizar por más de 15 minutos",
+            "description": "Alerta local del taller. Consultar el tablero de supervisión y el registro ETL."
+          },
+          "labels": {
+            "proyecto": "Taller5"
+          },
+          "isPaused": false
+        },
+        {
+          "uid": "taller5-paro-prolongado",
+          "title": "Paro abierto reportado por más de 15 minutos",
+          "condition": "C",
+          "data": [
+            {
+              "refId": "A",
+              "relativeTimeRange": {
+                "from": 900,
+                "to": 0
+              },
+              "datasourceUid": "taller5-postgres",
+              "model": {
+                "refId": "A",
+                "datasource": {
+                  "type": "grafana-postgresql-datasource",
+                  "uid": "taller5-postgres"
+                },
+                "rawSql": "SELECT coalesce(max(extract(epoch FROM(now()-inicio))/60),0) AS minutos FROM bi.fact_paros WHERE inicio IS NOT NULL AND fin IS NULL",
+                "format": "table",
+                "rawQuery": true,
+                "editorMode": "code"
+              }
+            },
+            {
+              "refId": "B",
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "B",
+                "type": "reduce",
+                "expression": "A",
+                "reducer": "last",
+                "settings": {
+                  "mode": "dropNN"
+                }
+              }
+            },
+            {
+              "refId": "C",
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "C",
+                "type": "threshold",
+                "expression": "B",
+                "conditions": [
+                  {
+                    "type": "query",
+                    "evaluator": {
+                      "type": "gt",
+                      "params": [
+                        15
+                      ]
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "reducer": {
+                      "type": "last",
+                      "params": []
+                    },
+                    "query": {
+                      "params": [
+                        "C"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "noDataState": "Alerting",
+          "execErrState": "Error",
+          "for": "2m",
+          "annotations": {
+            "summary": "Paro abierto reportado por más de 15 minutos",
+            "description": "Alerta local del taller. Consultar el tablero de supervisión y el registro ETL."
+          },
+          "labels": {
+            "proyecto": "Taller5"
+          },
+          "isPaused": false
+        }
+      ]
+    }
+  ]
+}

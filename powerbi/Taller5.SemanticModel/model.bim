@@ -1,0 +1,1220 @@
+{
+  "compatibilityLevel": 1606,
+  "model": {
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"DimFecha\", \"DimMaquina\", \"DimReferencia\", \"DimOperador\", \"DimTurno\", \"DimCausa\", \"FactProduccion\", \"FactParos\"]"
+      },
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "es-ES",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "relationships": [
+      {
+        "name": "05ecbc99-f617-41f1-b5f4-48e7057aa396",
+        "fromColumn": "fecha_id",
+        "fromTable": "FactProduccion",
+        "toColumn": "fecha_id",
+        "toTable": "DimFecha"
+      },
+      {
+        "name": "8f6cbd33-704b-443c-bbce-88c172a0cb26",
+        "fromColumn": "maquina_id",
+        "fromTable": "FactProduccion",
+        "toColumn": "maquina_id",
+        "toTable": "DimMaquina"
+      },
+      {
+        "name": "07a70e14-eb23-4530-b86b-fbfcd6edd209",
+        "fromColumn": "referencia_id",
+        "fromTable": "FactProduccion",
+        "toColumn": "referencia_id",
+        "toTable": "DimReferencia"
+      },
+      {
+        "name": "423f5d94-fd68-43f8-a67d-12bfed87cb36",
+        "fromColumn": "operador_id",
+        "fromTable": "FactProduccion",
+        "toColumn": "operador_id",
+        "toTable": "DimOperador"
+      },
+      {
+        "name": "59f0313a-cf6d-426d-b069-e0f07c2cefa6",
+        "fromColumn": "turno_id",
+        "fromTable": "FactProduccion",
+        "toColumn": "turno_id",
+        "toTable": "DimTurno"
+      },
+      {
+        "name": "adec483d-bdb8-4d7d-a7de-ba53aa766a1e",
+        "fromColumn": "fecha_id",
+        "fromTable": "FactParos",
+        "toColumn": "fecha_id",
+        "toTable": "DimFecha"
+      },
+      {
+        "name": "e3a3e1a9-f22a-49fd-bad4-e7231630ffef",
+        "fromColumn": "maquina_id",
+        "fromTable": "FactParos",
+        "toColumn": "maquina_id",
+        "toTable": "DimMaquina"
+      },
+      {
+        "name": "a30fd307-c45b-474c-adb1-bb7835b201d1",
+        "fromColumn": "referencia_id",
+        "fromTable": "FactParos",
+        "toColumn": "referencia_id",
+        "toTable": "DimReferencia"
+      },
+      {
+        "name": "20870c94-e146-4fc3-b4f2-1519aee58043",
+        "fromColumn": "operador_id",
+        "fromTable": "FactParos",
+        "toColumn": "operador_id",
+        "toTable": "DimOperador"
+      },
+      {
+        "name": "6e3af423-eb91-4f2e-986c-af9160208101",
+        "fromColumn": "turno_id",
+        "fromTable": "FactParos",
+        "toColumn": "turno_id",
+        "toTable": "DimTurno"
+      },
+      {
+        "name": "223e49db-e4d2-4e18-bd44-263a0adc91aa",
+        "fromColumn": "motivo_id",
+        "fromTable": "FactParos",
+        "toColumn": "motivo_id",
+        "toTable": "DimMotivo"
+      }
+    ],
+    "sourceQueryCulture": "es-ES",
+    "tables": [
+      {
+        "name": "DimFecha",
+        "columns": [
+          {
+            "name": "fecha_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "eebe4fde-bb38-4ddf-8663-10f7c924354d",
+            "sourceColumn": "fecha_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "fecha",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "yyyy-MM-dd",
+            "lineageTag": "f256fadc-56ab-4efe-bd92-b657406f6fd6",
+            "sourceColumn": "fecha",
+            "summarizeBy": "none",
+            "isKey": true
+          },
+          {
+            "name": "anio",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "lineageTag": "6db7d570-c01a-4c85-a035-06df39f61f4b",
+            "sourceColumn": "anio",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "mes_numero",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "lineageTag": "7142c825-1e2a-4fdd-9884-7ef276160c32",
+            "sourceColumn": "mes_numero",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "periodo",
+            "dataType": "string",
+            "lineageTag": "06981fe2-20ca-4aad-a802-efb2759bf32d",
+            "sourceColumn": "periodo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "mes",
+            "dataType": "string",
+            "lineageTag": "65d3d992-3935-4da3-a8fd-2d972b6002ed",
+            "sortByColumn": "mes_numero",
+            "sourceColumn": "mes",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "dia_semana",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "lineageTag": "141e8f85-a191-4185-a9c7-19f262d391a9",
+            "sourceColumn": "dia_semana",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "0ddcde36-9467-4efe-964f-050bbcb54631",
+        "partitions": [
+          {
+            "name": "DimFecha",
+            "mode": "import",
+            "source": {
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_fecha\") in Fuente",
+              "type": "m"
+            }
+          }
+        ],
+        "dataCategory": "Time"
+      },
+      {
+        "name": "DimMaquina",
+        "columns": [
+          {
+            "name": "maquina_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "3fb8cf49-8f3a-493c-82dc-2d436957156a",
+            "sourceColumn": "maquina_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "maquina",
+            "dataType": "string",
+            "lineageTag": "fbac9f84-6a2c-4864-a84b-d336941db716",
+            "sourceColumn": "maquina",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "632a113e-aaa0-40ed-bbf4-4c06be1fa724",
+        "partitions": [
+          {
+            "name": "DimMaquina",
+            "mode": "import",
+            "source": {
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_maquina\") in Fuente",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimReferencia",
+        "columns": [
+          {
+            "name": "referencia_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "9b2ae405-ac6b-4c1b-b797-58452a73fd2a",
+            "sourceColumn": "referencia_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "referencia",
+            "dataType": "string",
+            "lineageTag": "d0012e2b-da26-4349-a70b-ace201408d7d",
+            "sourceColumn": "referencia",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "e81868b2-4e56-4b6f-844d-c3ad131e404e",
+        "partitions": [
+          {
+            "name": "DimReferencia",
+            "mode": "import",
+            "source": {
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_referencia\") in Fuente",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimOperador",
+        "columns": [
+          {
+            "name": "operador_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "bd79cc5e-31fb-450e-8f02-dedb47043a50",
+            "sourceColumn": "operador_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "operador",
+            "dataType": "string",
+            "lineageTag": "a5ba26eb-46e8-404d-ba8b-6abe4d4c28c7",
+            "sourceColumn": "operador",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "bb745019-4eb8-429e-81f3-429a41691d01",
+        "partitions": [
+          {
+            "name": "DimOperador",
+            "mode": "import",
+            "source": {
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_operador\") in Fuente",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimTurno",
+        "columns": [
+          {
+            "name": "turno_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "4e1b24fe-e77d-4cd6-a96b-4fcbbf17c26d",
+            "sourceColumn": "turno_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "turno",
+            "dataType": "string",
+            "lineageTag": "d40bf3fb-5a8a-4bf1-8caa-1d13a0bfdabc",
+            "sourceColumn": "turno",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "469046a8-ae6e-410f-ac5c-9486e65c1de7",
+        "partitions": [
+          {
+            "name": "DimTurno",
+            "mode": "import",
+            "source": {
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_turno\") in Fuente",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimMotivo",
+        "columns": [
+          {
+            "name": "motivo_id",
+            "dataType": "string",
+            "sourceColumn": "motivo_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "codigo_paro",
+            "dataType": "int64",
+            "sourceColumn": "codigo_paro",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "causa",
+            "dataType": "string",
+            "sourceColumn": "causa",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "subcodigo",
+            "dataType": "string",
+            "sourceColumn": "subcodigo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "subcausa",
+            "dataType": "string",
+            "sourceColumn": "subcausa",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "area",
+            "dataType": "string",
+            "sourceColumn": "area",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "c79a2ea7-1f0d-4a8d-afa4-7a9ad7de7782",
+        "partitions": [
+          {
+            "name": "DimMotivo",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_motivo\") in Fuente"
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Paros",
+            "levels": [
+              {
+                "name": "Código",
+                "ordinal": 0,
+                "column": "causa"
+              },
+              {
+                "name": "Subcódigo",
+                "ordinal": 1,
+                "column": "subcausa"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "FactProduccion",
+        "columns": [
+          {
+            "name": "registro_id",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "78c61d26-3907-4399-92f2-6945e88c3426",
+            "sourceColumn": "registro_id",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "fecha",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "yyyy-MM-dd",
+            "isHidden": true,
+            "lineageTag": "dc9e40c1-6762-4b8b-9261-92d2225f84d1",
+            "sourceColumn": "fecha",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "fecha_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "e6a0bd46-cdba-4622-9ce7-db173a9e5297",
+            "sourceColumn": "fecha_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "maquina_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "707a500a-e86f-4a8e-8fff-ddad0661aac2",
+            "sourceColumn": "maquina_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "referencia_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "b96cf27a-832f-4ab1-937a-d4240bf70e89",
+            "sourceColumn": "referencia_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "operador_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "7be4dc59-5f2e-4b9a-a186-6f8a40e02205",
+            "sourceColumn": "operador_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "turno_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "b7e80b1c-1f9f-4423-bf98-05e13435fbe8",
+            "sourceColumn": "turno_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "horas_trabajadas",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "f8a1cd1b-ef18-494e-9408-7926c1286b98",
+            "sourceColumn": "horas_trabajadas",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "pacas_producidas",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "bf12fdd4-23d7-4314-8b44-aff1eb1c9f51",
+            "sourceColumn": "pacas_producidas",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "tiempo_planificado_minutos",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "e7c2fb94-5e09-4374-a4d8-862b6cffd91b",
+            "sourceColumn": "tiempo_planificado_minutos",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "unidades_ideales_por_minuto",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "829117e1-d7e1-42ff-92e7-6b78a1c58859",
+            "sourceColumn": "unidades_ideales_por_minuto",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "unidades_producidas",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "797a60fc-f57b-42e2-a93b-634ba0d444db",
+            "sourceColumn": "unidades_producidas",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "unidades_buenas",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "a030aac0-5fd6-48de-ba89-24af6599db21",
+            "sourceColumn": "unidades_buenas",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "cantidad_paros",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "3e941d7b-a6a7-4884-aced-34b6ee431620",
+            "sourceColumn": "cantidad_paros",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "minutos_paro_registrados",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "141db960-ea9e-4e9f-967b-755f7c258e5d",
+            "sourceColumn": "minutos_paro_registrados",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "minutos_paro_en_plan",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "cfefd4e6-0078-4710-9447-1863cdfae4b4",
+            "sourceColumn": "minutos_paro_en_plan",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "paros_sin_clasificar",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "ded380e4-e68f-4ee2-910a-13770a950066",
+            "sourceColumn": "paros_sin_clasificar",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "paros_abiertos",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "159425d3-bacd-4e2d-b8e9-8bf435b36b2f",
+            "sourceColumn": "paros_abiertos",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "minutos_operativos",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "ab53b4ae-2fe6-4d3e-8c11-780c755a8a7f",
+            "sourceColumn": "minutos_operativos",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "minutos_ideales",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "eb2a14a8-b55f-46b1-bc2d-4066adc1cf6a",
+            "sourceColumn": "minutos_ideales",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "minutos_buenos_ideales",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "4ea23c4c-5a80-444e-865c-e888e3215a75",
+            "sourceColumn": "minutos_buenos_ideales",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "disponibilidad",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "6fb1235e-cfe9-4600-8784-23033c2fbb40",
+            "sourceColumn": "disponibilidad",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "rendimiento",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "e6b11850-5478-4db4-ab65-7913891072fc",
+            "sourceColumn": "rendimiento",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "calidad",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "dc2e2eac-a6c9-4809-9224-d0f500cd342f",
+            "sourceColumn": "calidad",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "oee",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "b6e5089f-1f8a-469e-b6de-b45426487e16",
+            "sourceColumn": "oee",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "disponibilidad_valida",
+            "dataType": "boolean",
+            "isHidden": true,
+            "lineageTag": "93b35546-ad84-457c-8901-aad86cee42db",
+            "sourceColumn": "disponibilidad_valida",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "rendimiento_valido",
+            "dataType": "boolean",
+            "isHidden": true,
+            "lineageTag": "c0d10e43-f028-4fa9-982c-ec5a2038c5d4",
+            "sourceColumn": "rendimiento_valido",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "calidad_valida",
+            "dataType": "boolean",
+            "isHidden": true,
+            "lineageTag": "f736b56f-83b6-4280-abd3-d85ba315a715",
+            "sourceColumn": "calidad_valida",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "oee_valido",
+            "dataType": "boolean",
+            "isHidden": true,
+            "lineageTag": "4ab99aee-15d7-44c2-9655-50dff9f97fb6",
+            "sourceColumn": "oee_valido",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "limitaciones",
+            "dataType": "string",
+            "lineageTag": "cc630af5-4efb-499c-8409-6c1c3b8f153f",
+            "sourceColumn": "limitaciones",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "minutos_descanso_registrados",
+            "dataType": "double",
+            "lineageTag": "62a93633-0291-4a71-bca3-0711284293a2",
+            "sourceColumn": "minutos_descanso_registrados",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "origen_tiempo",
+            "dataType": "string",
+            "lineageTag": "aa11757e-48e3-46d5-8ba5-5b6640d8fc6f",
+            "sourceColumn": "origen_tiempo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "parametros_confirmados",
+            "dataType": "boolean",
+            "lineageTag": "6b3f642c-0124-4509-a120-d85a4c3b1178",
+            "sourceColumn": "parametros_confirmados",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "rendimiento_nominal",
+            "dataType": "double",
+            "lineageTag": "3661c21c-35bd-4754-8ee7-653459995fb2",
+            "sourceColumn": "rendimiento_nominal",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "productividad_registrada",
+            "dataType": "double",
+            "lineageTag": "862edbf7-430b-42c7-8435-f8c6fc591259",
+            "sourceColumn": "productividad_registrada",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "59783618-188a-4ff6-9e9a-992d5cc4516e",
+        "measures": [
+          {
+            "name": "Registros",
+            "displayFolder": "Producción",
+            "expression": "COUNTROWS(FactProduccion)",
+            "formatString": "#,0",
+            "lineageTag": "5ead52ba-6bb1-4ef8-afea-f79287213114"
+          },
+          {
+            "name": "Pacas",
+            "displayFolder": "Producción",
+            "expression": "SUM(FactProduccion[pacas_producidas])",
+            "formatString": "#,0",
+            "lineageTag": "206dcf43-5230-45a1-9459-db44b7219896"
+          },
+          {
+            "name": "Horas trabajadas",
+            "displayFolder": "Producción",
+            "expression": "SUM(FactProduccion[horas_trabajadas])",
+            "formatString": "#,0.00",
+            "lineageTag": "cbf4853a-dc42-424c-9398-6f7a77bf1365"
+          },
+          {
+            "name": "Paros",
+            "displayFolder": "Paros",
+            "expression": "COUNTROWS(FactParos)",
+            "formatString": "#,0",
+            "lineageTag": "4b3ec028-1d10-4a6b-8507-47f89f44c887"
+          },
+          {
+            "name": "Minutos de paro",
+            "displayFolder": "Paros",
+            "expression": "SUM(FactParos[duracion_minutos])",
+            "formatString": "#,0.00",
+            "lineageTag": "27d242a2-3a4b-459e-9e0e-906c3355643d"
+          },
+          {
+            "name": "Horas de paro",
+            "displayFolder": "Paros",
+            "expression": "DIVIDE([Minutos de paro],60)",
+            "formatString": "#,0.00",
+            "lineageTag": "f46b7fc2-1ee3-433c-96ab-8fb2ebb005ab"
+          },
+          {
+            "name": "Registros sin referencia",
+            "displayFolder": "Calidad de datos",
+            "expression": "CALCULATE([Registros], FactProduccion[referencia_id] = 0)",
+            "formatString": "#,0",
+            "lineageTag": "883d995c-f87e-4d4a-a8ff-c299b0fafeaa"
+          },
+          {
+            "name": "Registros con OEE",
+            "displayFolder": "Calidad de datos",
+            "expression": "COALESCE(CALCULATE([Registros], FactProduccion[oee_valido] = TRUE()),0)",
+            "formatString": "#,0",
+            "lineageTag": "92fd9e78-73a1-407c-af87-7643c0b3f383"
+          },
+          {
+            "name": "Cobertura OEE %",
+            "displayFolder": "Calidad de datos",
+            "expression": "DIVIDE([Registros con OEE],[Registros])",
+            "formatString": "0.0%",
+            "lineageTag": "d14a42dd-f691-4247-8b0d-abb79be366b9"
+          },
+          {
+            "name": "Última fecha",
+            "displayFolder": "Producción",
+            "expression": "MAX(FactProduccion[fecha])",
+            "formatString": "yyyy-MM-dd",
+            "lineageTag": "365424c9-2f27-467a-948b-17deb7659908"
+          },
+          {
+            "name": "Plan válido",
+            "displayFolder": "OEE",
+            "expression": "CALCULATE(SUM(FactProduccion[tiempo_planificado_minutos]), FactProduccion[oee_valido] = TRUE())",
+            "formatString": "#,0.00",
+            "lineageTag": "f866660e-c4a1-44a6-8f7c-b76905d04461"
+          },
+          {
+            "name": "Operación válida",
+            "displayFolder": "OEE",
+            "expression": "CALCULATE(SUM(FactProduccion[minutos_operativos]), FactProduccion[oee_valido] = TRUE())",
+            "formatString": "#,0.00",
+            "lineageTag": "3ca592a9-be3e-4f8c-aa0e-f03584e75439"
+          },
+          {
+            "name": "Tiempo ideal válido",
+            "displayFolder": "OEE",
+            "expression": "CALCULATE(SUM(FactProduccion[minutos_ideales]), FactProduccion[oee_valido] = TRUE())",
+            "formatString": "#,0.00",
+            "lineageTag": "97eca8a5-6091-4512-a120-a5193f16d121"
+          },
+          {
+            "name": "Tiempo bueno ideal válido",
+            "displayFolder": "OEE",
+            "expression": "CALCULATE(SUM(FactProduccion[minutos_buenos_ideales]), FactProduccion[oee_valido] = TRUE())",
+            "formatString": "#,0.00",
+            "lineageTag": "57d816da-7640-48d4-83dc-748cfc48130a"
+          },
+          {
+            "name": "Disponibilidad %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE(CALCULATE(SUM(FactProduccion[minutos_operativos]),FactProduccion[disponibilidad_valida]=TRUE()), CALCULATE(SUM(FactProduccion[tiempo_planificado_minutos]),FactProduccion[disponibilidad_valida]=TRUE()))",
+            "formatString": "0.0%",
+            "lineageTag": "d40af3c9-9f28-42fc-bb4f-ed6e41873e43"
+          },
+          {
+            "name": "Rendimiento %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE(CALCULATE(SUM(FactProduccion[minutos_ideales]),FactProduccion[rendimiento_valido]=TRUE()), CALCULATE(SUM(FactProduccion[minutos_operativos]),FactProduccion[rendimiento_valido]=TRUE()))",
+            "formatString": "0.0%",
+            "lineageTag": "8e9d5f9d-63e1-4085-994e-7bec657e8109"
+          },
+          {
+            "name": "Calidad OEE %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE([Tiempo bueno ideal válido],[Tiempo ideal válido])",
+            "formatString": "0.0%",
+            "lineageTag": "1555cb06-1358-4168-8932-41a311bc7d8c"
+          },
+          {
+            "name": "Calidad unidades %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE(CALCULATE(SUM(FactProduccion[unidades_buenas]), FactProduccion[calidad_valida] = TRUE()), CALCULATE(SUM(FactProduccion[unidades_producidas]), FactProduccion[calidad_valida] = TRUE()))",
+            "formatString": "0.0%",
+            "lineageTag": "2d4e6ebd-5534-4afe-a9f7-25af39b8b176"
+          },
+          {
+            "name": "OEE %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE([Tiempo bueno ideal válido],[Plan válido])",
+            "formatString": "0.0%",
+            "lineageTag": "b638e730-c1fa-403e-9d01-d74db1dd61a9"
+          },
+          {
+            "name": "Estado OEE",
+            "displayFolder": "OEE",
+            "expression": "IF([Registros con OEE] = 0, \"No calculable\", FORMAT([OEE %], \"0.0%\"))",
+            "formatString": "#,0",
+            "lineageTag": "596768f0-1fc9-4c09-8eeb-06f64d0aeefe"
+          },
+          {
+            "name": "Pareto acumulado %",
+            "displayFolder": "Paros",
+            "expression": "VAR Actual = [Minutos de paro]\nRETURN IF(ISINSCOPE(DimMotivo[subcausa]),\n VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[subcausa]),\"@Minutos\",[Minutos de paro])\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),\n VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[causa]),\"@Minutos\",[Minutos de paro])\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))))",
+            "formatString": "0.0%",
+            "lineageTag": "944bcdff-f586-4d1e-84f2-8c4a8aa850dd"
+          },
+          {
+            "name": "Disponibilidad mostrada",
+            "displayFolder": "OEE",
+            "expression": "IF(ISBLANK([Disponibilidad %]),\"Sin planificación\",FORMAT([Disponibilidad %],\"0.0%\"))",
+            "lineageTag": "03cbba21-dff4-4395-b10a-43e3d7f8454a"
+          },
+          {
+            "name": "Rendimiento mostrado",
+            "displayFolder": "OEE",
+            "expression": "IF(ISBLANK([Rendimiento %]),\"Sin vigencia\",FORMAT([Rendimiento %],\"0.0%\"))",
+            "lineageTag": "6f738b67-70e3-4848-85cd-554815a9548c"
+          },
+          {
+            "name": "Calidad mostrada",
+            "displayFolder": "OEE",
+            "expression": "IF(ISBLANK([Calidad unidades %]),\"Sin datos de calidad\",FORMAT([Calidad unidades %],\"0.0%\"))",
+            "lineageTag": "df59a898-8367-4647-9264-dacf7e58e1a6"
+          },
+          {
+            "name": "Registros con parámetros",
+            "displayFolder": "Calidad de datos",
+            "expression": "IF([Registros]>0,COALESCE(COUNTROWS(FILTER(FactProduccion,NOT ISBLANK(FactProduccion[unidades_ideales_por_minuto]) && NOT ISBLANK(FactProduccion[unidades_producidas]))),0))",
+            "formatString": "#,0",
+            "lineageTag": "151fc65b-eb49-4779-95c0-2d96db74075c"
+          },
+          {
+            "name": "Registros con disponibilidad",
+            "displayFolder": "OEE",
+            "expression": "COALESCE(CALCULATE([Registros],FactProduccion[disponibilidad_valida]=TRUE()),0)",
+            "formatString": "#,0",
+            "lineageTag": "da9c3b5d-d071-44df-b749-ce1c48be350e"
+          },
+          {
+            "name": "Cobertura disponibilidad %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE([Registros con disponibilidad],[Registros])",
+            "formatString": "0.0%",
+            "lineageTag": "e92912d2-abfb-4dc9-a2df-2269b7aad882"
+          },
+          {
+            "name": "Productividad registrada %",
+            "displayFolder": "OEE",
+            "expression": "DIVIDE([Horas trabajadas]*60-[Minutos de paro],[Horas trabajadas]*60)",
+            "formatString": "0.0%",
+            "lineageTag": "cf0207a6-3105-455a-809f-6ccfa7a7ba5e"
+          },
+          {
+            "name": "Registros nominales evaluables",
+            "displayFolder": "Diagnóstico nominal",
+            "expression": "IF([Registros]>0,COALESCE(COUNTROWS(FILTER(FactProduccion,NOT ISBLANK(FactProduccion[rendimiento_nominal]))),0))",
+            "formatString": "#,0",
+            "lineageTag": "f3cd59f1-73a0-4f61-a3ba-4510d7255b28"
+          },
+          {
+            "name": "Nominal superior al 100 %",
+            "displayFolder": "Diagnóstico nominal",
+            "expression": "IF([Registros]>0,COALESCE(COUNTROWS(FILTER(FactProduccion,FactProduccion[rendimiento_nominal]>1)),0))",
+            "formatString": "#,0",
+            "lineageTag": "8faef489-67cd-4ea4-bfeb-ffa67f38469f"
+          },
+          {
+            "name": "Rendimiento nominal diagnóstico %",
+            "displayFolder": "Diagnóstico nominal",
+            "expression": "VAR Filas = FILTER(FactProduccion,NOT ISBLANK(FactProduccion[rendimiento_nominal])) RETURN DIVIDE(SUMX(Filas,DIVIDE(FactProduccion[unidades_producidas],FactProduccion[unidades_ideales_por_minuto])),SUMX(Filas,FactProduccion[minutos_operativos]))",
+            "formatString": "0.0%",
+            "lineageTag": "13b4da84-59b1-4df9-92be-f5eead51ed86"
+          },
+          {
+            "name": "Registros con parámetros confirmados",
+            "displayFolder": "OEE",
+            "expression": "COALESCE(CALCULATE([Registros],FactProduccion[parametros_confirmados]=TRUE()),0)",
+            "formatString": "#,0",
+            "lineageTag": "3c673607-f88d-49eb-8fd2-fbdd0f0395df"
+          },
+          {
+            "name": "Pacas año anterior",
+            "expression": "IF(HASONEVALUE(DimFecha[anio]),CALCULATE([Pacas],SAMEPERIODLASTYEAR(DimFecha[fecha])))",
+            "displayFolder": "Comparación anual",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Variación interanual pacas %",
+            "expression": "DIVIDE([Pacas]-[Pacas año anterior],[Pacas año anterior])",
+            "displayFolder": "Comparación anual",
+            "formatString": "0.0%"
+          },
+          {
+            "name": "Pacas año anterior mostradas",
+            "expression": "IF(NOT HASONEVALUE(DimFecha[anio]),\"Selecciona un año\",IF(ISBLANK([Pacas año anterior]),\"Sin comparativo\",FORMAT([Pacas año anterior],\"#,0\")))",
+            "displayFolder": "Comparación anual"
+          },
+          {
+            "name": "Variación interanual mostrada",
+            "expression": "IF(NOT HASONEVALUE(DimFecha[anio]),\"Selecciona un año\",IF(ISBLANK([Variación interanual pacas %]),\"Sin comparativo\",FORMAT([Variación interanual pacas %],\"0.0%\")))",
+            "displayFolder": "Comparación anual"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "FactProduccion",
+            "mode": "import",
+            "source": {
+              "expression": "let\n    Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.fact_produccion\"),\n    Tipos = Table.TransformColumns(Fuente, {{\"parametros_confirmados\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"disponibilidad_valida\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"rendimiento_valido\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"calidad_valida\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"oee_valido\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}})\nin Tipos",
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "FactParos",
+        "columns": [
+          {
+            "name": "paro_id",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "e07e8388-a9d2-4d74-ac9a-e54ee5c22f95",
+            "sourceColumn": "paro_id",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "registro_id",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "6e8a0258-f13f-433f-ad2d-f2c456f4c460",
+            "sourceColumn": "registro_id",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "fecha",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "yyyy-MM-dd",
+            "isHidden": true,
+            "lineageTag": "21831af4-2341-49e8-bf99-0f1ffea00626",
+            "sourceColumn": "fecha",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "fecha_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "00a5d6a8-5609-4bcf-9652-9652f74f66b7",
+            "sourceColumn": "fecha_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "maquina_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "78d768d0-8e35-4f07-88ab-126226303239",
+            "sourceColumn": "maquina_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "referencia_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "a7ed1ca8-6b08-401f-93c8-eff389d2e6c9",
+            "sourceColumn": "referencia_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "operador_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "465ac2dd-2aac-4777-93f0-dec74a4d154a",
+            "sourceColumn": "operador_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "turno_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "a4f96a5e-f48c-4014-859c-ff2753af094d",
+            "sourceColumn": "turno_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "codigo_paro",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "5563d41d-16d9-4190-8f90-d7bca5c4415f",
+            "sourceColumn": "codigo_paro",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "subcodigo",
+            "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "ecbdaa8d-835a-45f9-8164-2cd514703e75",
+            "sourceColumn": "subcodigo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "duracion_minutos",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "bff1b529-1f17-4c06-b865-248e88c0bb80",
+            "sourceColumn": "duracion_minutos",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "inicio",
+            "dataType": "dateTime",
+            "formatString": "yyyy-MM-dd",
+            "isHidden": true,
+            "lineageTag": "e1029e9d-9b90-41b5-a82f-a88f4ae56393",
+            "sourceColumn": "inicio",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "fin",
+            "dataType": "dateTime",
+            "formatString": "yyyy-MM-dd",
+            "isHidden": true,
+            "lineageTag": "19a14d74-c6d8-4030-b99b-5ad75763ccd4",
+            "sourceColumn": "fin",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "observaciones",
+            "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "1a8ead7b-6719-463c-819d-cb8b18032f30",
+            "sourceColumn": "observaciones",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "horario_verificable",
+            "dataType": "boolean",
+            "isHidden": true,
+            "lineageTag": "9db622f7-b8aa-46a8-b48d-d5e5999d4746",
+            "sourceColumn": "horario_verificable",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "motivo_id",
+            "dataType": "string",
+            "sourceColumn": "motivo_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          }
+        ],
+        "lineageTag": "1e988dee-a68e-4d00-8aaf-a5a154e6d389",
+        "partitions": [
+          {
+            "name": "FactParos",
+            "mode": "import",
+            "source": {
+              "expression": "let\n    Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.fact_paros\"),\n    Tipos = Table.TransformColumns(Fuente, {{\"horario_verificable\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}})\nin Tipos",
+              "type": "m"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

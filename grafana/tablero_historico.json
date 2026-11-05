@@ -1,0 +1,906 @@
+{
+  "uid": "taller5-historico",
+  "title": "Taller 5 | Histórico y Pareto de paros",
+  "tags": [
+    "Taller5",
+    "OEE"
+  ],
+  "timezone": "America/Bogota",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "refresh": "30s",
+  "time": {
+    "from": "2022-01-01T00:00:00.000Z",
+    "to": "2025-03-29T05:00:00.000Z"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Histórico de producción y paros",
+      "type": "text",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 3
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "<h3>Histórico consolidado 2022–2025</h3><p>Filtros de fecha y máquina. Disponibilidad reconstruida según Excel; parámetros nominales sin vigencia confirmada. Calidad pendiente: no se supone OEE completo.</p>"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Producciones registradas",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT count(*) AS registros FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Pacas registradas",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT sum(pacas_producidas) AS pacas FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Minutos de paro registrados",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix:min",
+          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT sum(duracion_minutos) AS minutos FROM bi.fact_paros p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Producciones sin referencia",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT count(*) AS registros FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) AND referencia_id=0",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Principales causas por minutos",
+      "type": "barchart",
+      "gridPos": {
+        "x": 0,
+        "y": 11,
+        "w": 12,
+        "h": 12
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix:min",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.8,
+        "groupWidth": 0.8,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT left(c.causa,32) AS \"Causa\",sum(p.duracion_minutos) AS \"Minutos\" FROM bi.fact_paros p JOIN bi.dim_causa c USING(codigo_paro) WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) GROUP BY c.codigo_paro,c.causa ORDER BY \"Minutos\" DESC,c.codigo_paro LIMIT 10",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Pareto acumulado de causas",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 11,
+        "w": 12,
+        "h": 12
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Causa"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Minutos"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Acumulado %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "WITH causas AS (SELECT c.causa AS \"Causa\",sum(p.duracion_minutos) AS \"Minutos\" FROM bi.fact_paros p JOIN bi.dim_causa c USING(codigo_paro) WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) GROUP BY c.codigo_paro,c.causa ORDER BY \"Minutos\" DESC,c.codigo_paro) SELECT \"Causa\",\"Minutos\",round(100.0*sum(\"Minutos\") OVER(ORDER BY \"Minutos\" DESC,\"Causa\")/nullif(sum(\"Minutos\") OVER(),0),2) AS \"Acumulado %\" FROM causas ORDER BY \"Minutos\" DESC,\"Causa\"",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Tendencia mensual de paros",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 23,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix:min",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {},
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT date_trunc('month',p.fecha)::timestamp AS time,sum(duracion_minutos) AS \"Minutos\" FROM bi.fact_paros p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) GROUP BY 1 ORDER BY 1",
+          "format": "time_series",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Minutos de paro por máquina",
+      "type": "barchart",
+      "gridPos": {
+        "x": 12,
+        "y": 23,
+        "w": 12,
+        "h": 9
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix:min",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.8,
+        "groupWidth": 0.8,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT m.maquina AS \"Máquina\",sum(p.duracion_minutos) AS \"Minutos\" FROM bi.fact_paros p JOIN bi.dim_maquina m USING(maquina_id) WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) GROUP BY m.maquina ORDER BY \"Minutos\" DESC",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Cobertura de datos para OEE",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 24,
+        "h": 6
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT count(*) AS \"Producciones\",count(*) FILTER(WHERE disponibilidad_valida) AS \"Disponibilidad válida\",count(*) FILTER(WHERE parametros_confirmados) AS \"Parámetros confirmados\",count(unidades_buenas) AS \"Con unidades buenas\",count(*) FILTER(WHERE rendimiento_nominal>1) AS \"Nominal >100 %\",count(*) FILTER(WHERE oee_valido) AS \"OEE calculable\" FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Disponibilidad reconstruida",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 8,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "Regla del Excel: horas menos descansos 16/17. Solo tiempos coherentes; no prueba ausencia de paros sin registrar.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT sum(minutos_operativos) FILTER(WHERE disponibilidad_valida)/nullif(sum(tiempo_planificado_minutos) FILTER(WHERE disponibilidad_valida),0) AS valor FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Tiempo sin paros / horas",
+      "type": "stat",
+      "gridPos": {
+        "x": 8,
+        "y": 7,
+        "w": 8,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "Fórmula original de productividad; incluye todas las inconsistencias de los registros. No es OEE.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT 1-sum(minutos_paro_registrados)/nullif(sum(horas_trabajadas)*60,0) AS valor FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Nominal >100 %: revisar",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 7,
+        "w": 8,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "No se recortan valores ni se adoptan parámetros sin vigencia histórica.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "No calculable",
+                  "color": "gray"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT count(*) FILTER(WHERE rendimiento_nominal>1) AS valor FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Revisión de parámetros por mes y máquina",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 38,
+        "w": 24,
+        "h": 9
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "Catálogo sin vigencia confirmada: solo diagnóstico. Los valores antiguos no se asignan a períodos completos.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT to_char(p.fecha,'YYYY-MM') AS \"Período\",m.maquina AS \"Máquina\",count(*) AS \"Registros\",count(unidades_ideales_por_minuto) AS \"Nominales\",count(*) FILTER(WHERE parametros_confirmados) AS \"Confirmados\",count(*) FILTER(WHERE rendimiento_nominal>1) AS \"Nominal >100 %\" FROM bi.fact_produccion p JOIN bi.dim_maquina m USING(maquina_id) WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) GROUP BY 1,2 ORDER BY 1,2",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "maquina",
+        "label": "Máquina",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "taller5-postgres"
+        },
+        "query": "SELECT maquina AS __text, maquina_id AS __value FROM bi.dim_maquina ORDER BY maquina_id",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": []
+      }
+    ]
+  }
+}

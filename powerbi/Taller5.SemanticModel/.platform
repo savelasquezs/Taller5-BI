@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Taller5"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "812058cd-65e0-48cf-849e-82e8525dd8ad"
+  }
+}

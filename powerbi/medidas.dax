@@ -1,0 +1,112 @@
+[Registros] =
+COUNTROWS(FactProduccion)
+
+[Pacas] =
+SUM(FactProduccion[pacas_producidas])
+
+[Horas trabajadas] =
+SUM(FactProduccion[horas_trabajadas])
+
+[Paros] =
+COUNTROWS(FactParos)
+
+[Minutos de paro] =
+SUM(FactParos[duracion_minutos])
+
+[Horas de paro] =
+DIVIDE([Minutos de paro],60)
+
+[Registros sin referencia] =
+CALCULATE([Registros], FactProduccion[referencia_id] = 0)
+
+[Registros con OEE] =
+COALESCE(CALCULATE([Registros], FactProduccion[oee_valido] = TRUE()),0)
+
+[Cobertura OEE %] =
+DIVIDE([Registros con OEE],[Registros])
+
+[Última fecha] =
+MAX(FactProduccion[fecha])
+
+[Plan válido] =
+CALCULATE(SUM(FactProduccion[tiempo_planificado_minutos]), FactProduccion[oee_valido] = TRUE())
+
+[Operación válida] =
+CALCULATE(SUM(FactProduccion[minutos_operativos]), FactProduccion[oee_valido] = TRUE())
+
+[Tiempo ideal válido] =
+CALCULATE(SUM(FactProduccion[minutos_ideales]), FactProduccion[oee_valido] = TRUE())
+
+[Tiempo bueno ideal válido] =
+CALCULATE(SUM(FactProduccion[minutos_buenos_ideales]), FactProduccion[oee_valido] = TRUE())
+
+[Disponibilidad %] =
+DIVIDE(CALCULATE(SUM(FactProduccion[minutos_operativos]),FactProduccion[disponibilidad_valida]=TRUE()), CALCULATE(SUM(FactProduccion[tiempo_planificado_minutos]),FactProduccion[disponibilidad_valida]=TRUE()))
+
+[Rendimiento %] =
+DIVIDE(CALCULATE(SUM(FactProduccion[minutos_ideales]),FactProduccion[rendimiento_valido]=TRUE()), CALCULATE(SUM(FactProduccion[minutos_operativos]),FactProduccion[rendimiento_valido]=TRUE()))
+
+[Calidad OEE %] =
+DIVIDE([Tiempo bueno ideal válido],[Tiempo ideal válido])
+
+[Calidad unidades %] =
+DIVIDE(CALCULATE(SUM(FactProduccion[unidades_buenas]), FactProduccion[calidad_valida] = TRUE()), CALCULATE(SUM(FactProduccion[unidades_producidas]), FactProduccion[calidad_valida] = TRUE()))
+
+[OEE %] =
+DIVIDE([Tiempo bueno ideal válido],[Plan válido])
+
+[Estado OEE] =
+IF([Registros con OEE] = 0, "No calculable", FORMAT([OEE %], "0.0%"))
+
+[Pareto acumulado %] =
+VAR Actual = [Minutos de paro]
+RETURN IF(ISINSCOPE(DimMotivo[subcausa]),
+ VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[subcausa]),"@Minutos",[Minutos de paro])
+ RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),
+ VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[causa]),"@Minutos",[Minutos de paro])
+ RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))))
+
+[Disponibilidad mostrada] =
+IF(ISBLANK([Disponibilidad %]),"Sin planificación",FORMAT([Disponibilidad %],"0.0%"))
+
+[Rendimiento mostrado] =
+IF(ISBLANK([Rendimiento %]),"Sin vigencia",FORMAT([Rendimiento %],"0.0%"))
+
+[Calidad mostrada] =
+IF(ISBLANK([Calidad unidades %]),"Sin datos de calidad",FORMAT([Calidad unidades %],"0.0%"))
+
+[Registros con parámetros] =
+IF([Registros]>0,COALESCE(COUNTROWS(FILTER(FactProduccion,NOT ISBLANK(FactProduccion[unidades_ideales_por_minuto]) && NOT ISBLANK(FactProduccion[unidades_producidas]))),0))
+
+[Registros con disponibilidad] =
+COALESCE(CALCULATE([Registros],FactProduccion[disponibilidad_valida]=TRUE()),0)
+
+[Cobertura disponibilidad %] =
+DIVIDE([Registros con disponibilidad],[Registros])
+
+[Productividad registrada %] =
+DIVIDE([Horas trabajadas]*60-[Minutos de paro],[Horas trabajadas]*60)
+
+[Registros nominales evaluables] =
+IF([Registros]>0,COALESCE(COUNTROWS(FILTER(FactProduccion,NOT ISBLANK(FactProduccion[rendimiento_nominal]))),0))
+
+[Nominal superior al 100 %] =
+IF([Registros]>0,COALESCE(COUNTROWS(FILTER(FactProduccion,FactProduccion[rendimiento_nominal]>1)),0))
+
+[Rendimiento nominal diagnóstico %] =
+VAR Filas = FILTER(FactProduccion,NOT ISBLANK(FactProduccion[rendimiento_nominal])) RETURN DIVIDE(SUMX(Filas,DIVIDE(FactProduccion[unidades_producidas],FactProduccion[unidades_ideales_por_minuto])),SUMX(Filas,FactProduccion[minutos_operativos]))
+
+[Registros con parámetros confirmados] =
+COALESCE(CALCULATE([Registros],FactProduccion[parametros_confirmados]=TRUE()),0)
+
+[Pacas año anterior] =
+IF(HASONEVALUE(DimFecha[anio]),CALCULATE([Pacas],SAMEPERIODLASTYEAR(DimFecha[fecha])))
+
+[Variación interanual pacas %] =
+DIVIDE([Pacas]-[Pacas año anterior],[Pacas año anterior])
+
+[Pacas año anterior mostradas] =
+IF(NOT HASONEVALUE(DimFecha[anio]),"Selecciona un año",IF(ISBLANK([Pacas año anterior]),"Sin comparativo",FORMAT([Pacas año anterior],"#,0")))
+
+[Variación interanual mostrada] =
+IF(NOT HASONEVALUE(DimFecha[anio]),"Selecciona un año",IF(ISBLANK([Variación interanual pacas %]),"Sin comparativo",FORMAT([Variación interanual pacas %],"0.0%")))

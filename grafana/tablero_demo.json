@@ -1,0 +1,309 @@
+{
+  "uid": "taller5-demo",
+  "title": "Taller 5 | Reproducción histórica en vivo",
+  "tags": [
+    "Taller5",
+    "OEE"
+  ],
+  "timezone": "America/Bogota",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "refresh": "5s",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Alcance de la demostración",
+      "type": "text",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 4
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "## REPRODUCCIÓN HISTÓRICA — DATOS ORIGINALES\nCada minuto se reproduce un registro de producción completo y avanza una hora virtual. Las cantidades y paros son originales del turno, **no mediciones horarias actuales**. Se conserva la fecha original. Secuencia: normal → >60 minutos → normal. El histórico y el OEE no se modifican."
+      }
+    },
+    {
+      "id": 2,
+      "title": "Minutos de paro del último registro",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 8,
+        "h": 5
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "m",
+          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT minutos_paro_registrados FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) ORDER BY evento_id DESC LIMIT 1",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Pacas originales del último registro",
+      "type": "stat",
+      "gridPos": {
+        "x": 8,
+        "y": 4,
+        "w": 8,
+        "h": 5
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT pacas_producidas FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) ORDER BY evento_id DESC LIMIT 1",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Registros reproducidos (ventana)",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 4,
+        "w": 8,
+        "h": 5
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT count(*) FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) AND $__timeFilter(emitido_en)",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Paros por emisión — el valor pertenece al registro original",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 24,
+        "h": 9
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "m",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {},
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT emitido_en AS time,minutos_paro_registrados::float AS minutos FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) AND $__timeFilter(emitido_en) ORDER BY 1",
+          "format": "time_series",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Último registro reproducido por máquina",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "SELECT DISTINCT ON(maquina) maquina,fecha_original,registro_id_origen,minutos_paro_registrados,pacas_producidas,hora_virtual,emitido_en FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) ORDER BY maquina,evento_id DESC",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "maquina",
+        "label": "Máquina",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "taller5-postgres"
+        },
+        "query": "SELECT maquina AS __text, maquina_id AS __value FROM bi.dim_maquina ORDER BY maquina_id",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": []
+      }
+    ]
+  }
+}

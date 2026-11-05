@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.pytest_cache/
+logs/*.tmp
+**/.pbi/
+.env
+*.pbix
+*.xlsm
+*.docx
+*.pdf
+.vscode/
+logs/
+evidencias/
+*.dump
+*.bak
