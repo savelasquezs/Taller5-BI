@@ -10,20 +10,8 @@
       "nodes": [
         {
           "location": {
-            "x": 336.95196569567679,
-            "y": -50
-          },
-          "nodeIndex": "DimCausa",
-          "size": {
-            "height": 176,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
             "x": 105.90233050205495,
-            "y": 616.33886209048319
+            "y": 690.85645132425987
           },
           "nodeIndex": "DimFecha",
           "size": {
@@ -35,7 +23,7 @@
         {
           "location": {
             "x": 171.26401143456553,
-            "y": 967.044587794094
+            "y": 1041.5621770278708
           },
           "nodeIndex": "DimMaquina",
           "size": {
@@ -47,7 +35,7 @@
         {
           "location": {
             "x": 624.04256619816147,
-            "y": 149.03517846755335
+            "y": 223.55276770133003
           },
           "nodeIndex": "DimOperador",
           "size": {
@@ -59,7 +47,7 @@
         {
           "location": {
             "x": 624.28400912630286,
-            "y": 435.80826669425608
+            "y": 510.32585592803275
           },
           "nodeIndex": "DimReferencia",
           "size": {
@@ -71,7 +59,7 @@
         {
           "location": {
             "x": 50,
-            "y": 359.98557779673865
+            "y": 434.50316703051533
           },
           "nodeIndex": "DimTurno",
           "size": {
@@ -83,7 +71,7 @@
         {
           "location": {
             "x": 337.040213105209,
-            "y": 262.89914075060074
+            "y": 337.41672998437741
           },
           "nodeIndex": "FactParos",
           "size": {
@@ -95,11 +83,24 @@
         {
           "location": {
             "x": 450.34773380995949,
-            "y": 616.50596804216343
+            "y": 691.02355727594011
           },
           "nodeIndex": "FactProduccion",
           "size": {
             "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 858.28400912630286,
+            "y": 399.522293897047
+          },
+          "nodeIndex": "DimMotivo",
+          "nodeLineageTag": "c79a2ea7-1f0d-4a8d-afa4-7a9ad7de7782",
+          "size": {
+            "height": 296,
             "width": 234
           },
           "zIndex": 0

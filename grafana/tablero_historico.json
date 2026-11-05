@@ -875,6 +875,56 @@
           "editorMode": "code"
         }
       ]
+    },
+    {
+      "id": 15,
+      "title": "Paros por código / horas registradas (%)",
+      "type": "barchart",
+      "gridPos": {
+        "x": 0,
+        "y": 47,
+        "w": 24,
+        "h": 11
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "taller5-postgres"
+      },
+      "description": "100 × minutos de cada código / (horas registradas × 60). El denominador se agrega por separado para evitar repetir horas por incidencia. Mismos filtros de fecha y máquina. No es participación Pareto ni OEE.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.8,
+        "groupWidth": 0.8,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "taller5-postgres"
+          },
+          "rawSql": "WITH horas AS (SELECT sum(p.horas_trabajadas)*60 AS minutos_base FROM bi.fact_produccion p WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv})), causas AS (SELECT c.codigo_paro,c.causa,sum(p.duracion_minutos) AS minutos_paro FROM bi.fact_paros p JOIN bi.dim_causa c USING(codigo_paro) WHERE $__timeFilter(p.fecha) AND p.maquina_id IN (${maquina:csv}) GROUP BY c.codigo_paro,c.causa) SELECT left(c.causa,50) AS \"Código\",100*c.minutos_paro/nullif(h.minutos_base,0) AS \"Porcentaje sobre horas\" FROM causas c CROSS JOIN horas h ORDER BY \"Porcentaje sobre horas\" DESC,c.codigo_paro",
+          "format": "table",
+          "rawQuery": true,
+          "editorMode": "code"
+        }
+      ]
     }
   ],
   "templating": {

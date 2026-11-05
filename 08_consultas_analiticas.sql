@@ -53,3 +53,16 @@ SELECT to_char(fecha,'YYYY-MM') AS periodo,m.maquina,count(*) AS registros,
        count(*) FILTER(WHERE parametros_confirmados) AS vigencia_confirmada,
        count(*) FILTER(WHERE oee_valido) AS oee_calculable
 FROM bi.fact_produccion p JOIN bi.dim_maquina m USING(maquina_id) GROUP BY 1,2 ORDER BY 1,2;
+
+
+-- 8. Minutos de cada código sobre horas registradas; distinto del Pareto.
+WITH horas AS (
+    SELECT sum(horas_trabajadas)*60 AS minutos_base FROM bi.fact_produccion
+), causas AS (
+    SELECT c.codigo_paro,c.causa,sum(p.duracion_minutos) AS minutos_paro
+    FROM bi.fact_paros p JOIN bi.dim_causa c USING(codigo_paro)
+    GROUP BY c.codigo_paro,c.causa
+)
+SELECT c.codigo_paro,c.causa,c.minutos_paro,h.minutos_base,
+       round(100*c.minutos_paro/nullif(h.minutos_base,0),2) AS porcentaje_sobre_horas
+FROM causas c CROSS JOIN horas h ORDER BY porcentaje_sobre_horas DESC,c.codigo_paro;

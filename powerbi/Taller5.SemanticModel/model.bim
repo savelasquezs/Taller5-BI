@@ -4,7 +4,7 @@
     "annotations": [
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"DimFecha\", \"DimMaquina\", \"DimReferencia\", \"DimOperador\", \"DimTurno\", \"DimCausa\", \"FactProduccion\", \"FactParos\"]"
+        "value": "[\"DimFecha\",\"DimMaquina\",\"DimReferencia\",\"DimOperador\",\"DimTurno\",\"FactProduccion\",\"FactParos\",\"DimMotivo\"]"
       },
       {
         "name": "__PBI_TimeIntelligenceEnabled",
@@ -104,6 +104,12 @@
     "tables": [
       {
         "name": "DimFecha",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
         "columns": [
           {
             "name": "fecha_id",
@@ -123,10 +129,10 @@
             ],
             "dataType": "dateTime",
             "formatString": "yyyy-MM-dd",
+            "isKey": true,
             "lineageTag": "f256fadc-56ab-4efe-bd92-b657406f6fd6",
             "sourceColumn": "fecha",
-            "summarizeBy": "none",
-            "isKey": true
+            "summarizeBy": "none"
           },
           {
             "name": "anio",
@@ -183,6 +189,7 @@
             "summarizeBy": "sum"
           }
         ],
+        "dataCategory": "Time",
         "lineageTag": "0ddcde36-9467-4efe-964f-050bbcb54631",
         "partitions": [
           {
@@ -193,8 +200,7 @@
               "type": "m"
             }
           }
-        ],
-        "dataCategory": "Time"
+        ]
       },
       {
         "name": "DimMaquina",
@@ -326,49 +332,44 @@
           {
             "name": "motivo_id",
             "dataType": "string",
+            "lineageTag": "85a1f819-58fd-4d6e-a938-6377d464df1f",
             "sourceColumn": "motivo_id",
             "summarizeBy": "none"
           },
           {
             "name": "codigo_paro",
             "dataType": "int64",
+            "lineageTag": "5a938e4d-d85f-4dbb-a9e9-f5f5093eaaf3",
             "sourceColumn": "codigo_paro",
             "summarizeBy": "none"
           },
           {
             "name": "causa",
             "dataType": "string",
+            "lineageTag": "ae607b22-cf7c-4112-b5ae-5b7ce3437691",
             "sourceColumn": "causa",
             "summarizeBy": "none"
           },
           {
             "name": "subcodigo",
             "dataType": "string",
+            "lineageTag": "a75b9b16-0abf-41de-9efa-aab492e3c929",
             "sourceColumn": "subcodigo",
             "summarizeBy": "none"
           },
           {
             "name": "subcausa",
             "dataType": "string",
+            "lineageTag": "b014c655-06e1-422b-9bbb-39ee5e8448eb",
             "sourceColumn": "subcausa",
             "summarizeBy": "none"
           },
           {
             "name": "area",
             "dataType": "string",
+            "lineageTag": "d72fa3e7-83b9-40a4-b32e-c4690e0ff86e",
             "sourceColumn": "area",
             "summarizeBy": "none"
-          }
-        ],
-        "lineageTag": "c79a2ea7-1f0d-4a8d-afa4-7a9ad7de7782",
-        "partitions": [
-          {
-            "name": "DimMotivo",
-            "mode": "import",
-            "source": {
-              "type": "m",
-              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_motivo\") in Fuente"
-            }
           }
         ],
         "hierarchies": [
@@ -377,15 +378,29 @@
             "levels": [
               {
                 "name": "Código",
-                "ordinal": 0,
-                "column": "causa"
+                "column": "causa",
+                "lineageTag": "7684907b-e549-4e16-ab1d-be8518426910",
+                "ordinal": 0
               },
               {
                 "name": "Subcódigo",
-                "ordinal": 1,
-                "column": "subcausa"
+                "column": "subcausa",
+                "lineageTag": "3e811d20-c32e-4f60-8e95-8ddb1fb14fef",
+                "ordinal": 1
               }
-            ]
+            ],
+            "lineageTag": "ca465a2d-d39a-410f-9045-19e9c7866d1e"
+          }
+        ],
+        "lineageTag": "c79a2ea7-1f0d-4a8d-afa4-7a9ad7de7782",
+        "partitions": [
+          {
+            "name": "DimMotivo",
+            "mode": "import",
+            "source": {
+              "expression": "let Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.dim_motivo\") in Fuente",
+              "type": "m"
+            }
           }
         ]
       },
@@ -933,7 +948,7 @@
           {
             "name": "Pareto acumulado %",
             "displayFolder": "Paros",
-            "expression": "VAR Actual = [Minutos de paro]\nRETURN IF(ISINSCOPE(DimMotivo[subcausa]),\n VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[subcausa]),\"@Minutos\",[Minutos de paro])\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),\n VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[causa]),\"@Minutos\",[Minutos de paro])\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))))",
+            "expression": "VAR Actual = [Minutos de paro]\nRETURN IF(ISINSCOPE(DimMotivo[subcausa]) && NOT ISINSCOPE(DimMotivo[causa]),\n VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[subcausa]),\"@Minutos\",CALCULATE([Minutos de paro]))\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),\n IF(ISINSCOPE(DimMotivo[subcausa]),\n VAR Causas = ADDCOLUMNS(SUMMARIZE(ALLSELECTED(DimMotivo),DimMotivo[causa],DimMotivo[subcausa]),\"@Minutos\",CALCULATE([Minutos de paro]))\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),\n VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[causa]),\"@Minutos\",[Minutos de paro])\n RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos])))))",
             "formatString": "0.0%",
             "lineageTag": "944bcdff-f586-4d1e-84f2-8c4a8aa850dd"
           },
@@ -1013,25 +1028,29 @@
           },
           {
             "name": "Pacas año anterior",
-            "expression": "IF(HASONEVALUE(DimFecha[anio]),CALCULATE([Pacas],SAMEPERIODLASTYEAR(DimFecha[fecha])))",
             "displayFolder": "Comparación anual",
-            "formatString": "#,0"
+            "expression": "IF(HASONEVALUE(DimFecha[anio]),CALCULATE([Pacas],SAMEPERIODLASTYEAR(DimFecha[fecha])))",
+            "formatString": "#,0",
+            "lineageTag": "f4c00aea-54fe-4322-a014-d5188fc8a089"
           },
           {
             "name": "Variación interanual pacas %",
-            "expression": "DIVIDE([Pacas]-[Pacas año anterior],[Pacas año anterior])",
             "displayFolder": "Comparación anual",
-            "formatString": "0.0%"
+            "expression": "DIVIDE([Pacas]-[Pacas año anterior],[Pacas año anterior])",
+            "formatString": "0.0%",
+            "lineageTag": "e6c3e66f-fea4-4b4d-804e-91418206db56"
           },
           {
             "name": "Pacas año anterior mostradas",
+            "displayFolder": "Comparación anual",
             "expression": "IF(NOT HASONEVALUE(DimFecha[anio]),\"Selecciona un año\",IF(ISBLANK([Pacas año anterior]),\"Sin comparativo\",FORMAT([Pacas año anterior],\"#,0\")))",
-            "displayFolder": "Comparación anual"
+            "lineageTag": "34d781ba-c1fb-463a-a841-ae00374af9d4"
           },
           {
             "name": "Variación interanual mostrada",
-            "expression": "IF(NOT HASONEVALUE(DimFecha[anio]),\"Selecciona un año\",IF(ISBLANK([Variación interanual pacas %]),\"Sin comparativo\",FORMAT([Variación interanual pacas %],\"0.0%\")))",
-            "displayFolder": "Comparación anual"
+            "displayFolder": "Comparación anual",
+            "expression": "(IF(NOT HASONEVALUE(DimFecha[anio]),\"Selecciona un año\",IF(ISBLANK([Variación interanual pacas %]),\"Sin comparativo\",FORMAT([Variación interanual pacas %],\"0.0%\")))) & IF(HASONEVALUE(DimFecha[anio]) && SELECTEDVALUE(DimFecha[anio])=2025,\" (2025 parcial)\",\"\")",
+            "lineageTag": "76d8e446-d998-4fc9-909f-86106a774ffb"
           }
         ],
         "partitions": [
@@ -1039,7 +1058,12 @@
             "name": "FactProduccion",
             "mode": "import",
             "source": {
-              "expression": "let\n    Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.fact_produccion\"),\n    Tipos = Table.TransformColumns(Fuente, {{\"parametros_confirmados\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"disponibilidad_valida\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"rendimiento_valido\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"calidad_valida\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"oee_valido\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}})\nin Tipos",
+              "expression": [
+                "let",
+                "    Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.fact_produccion\"),",
+                "    Tipos = Table.TransformColumns(Fuente, {{\"parametros_confirmados\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"disponibilidad_valida\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"rendimiento_valido\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"calidad_valida\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}, {\"oee_valido\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}})",
+                "in Tipos"
+              ],
               "type": "m"
             }
           }
@@ -1198,9 +1222,10 @@
           {
             "name": "motivo_id",
             "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "1d12072f-bee1-4c69-94c7-d3a45d8c0295",
             "sourceColumn": "motivo_id",
-            "summarizeBy": "none",
-            "isHidden": true
+            "summarizeBy": "none"
           }
         ],
         "lineageTag": "1e988dee-a68e-4d00-8aaf-a5a154e6d389",
@@ -1209,7 +1234,12 @@
             "name": "FactParos",
             "mode": "import",
             "source": {
-              "expression": "let\n    Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.fact_paros\"),\n    Tipos = Table.TransformColumns(Fuente, {{\"horario_verificable\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}})\nin Tipos",
+              "expression": [
+                "let",
+                "    Fuente = Odbc.Query(\"dsn=Taller5Docker\", \"SELECT * FROM bi.fact_paros\"),",
+                "    Tipos = Table.TransformColumns(Fuente, {{\"horario_verificable\", each if _ is logical then _ else Logical.From(Number.From(_)), type logical}})",
+                "in Tipos"
+              ],
               "type": "m"
             }
           }

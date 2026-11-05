@@ -60,11 +60,14 @@ IF([Registros con OEE] = 0, "No calculable", FORMAT([OEE %], "0.0%"))
 
 [Pareto acumulado %] =
 VAR Actual = [Minutos de paro]
-RETURN IF(ISINSCOPE(DimMotivo[subcausa]),
- VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[subcausa]),"@Minutos",[Minutos de paro])
+RETURN IF(ISINSCOPE(DimMotivo[subcausa]) && NOT ISINSCOPE(DimMotivo[causa]),
+ VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[subcausa]),"@Minutos",CALCULATE([Minutos de paro]))
+ RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),
+ IF(ISINSCOPE(DimMotivo[subcausa]),
+ VAR Causas = ADDCOLUMNS(SUMMARIZE(ALLSELECTED(DimMotivo),DimMotivo[causa],DimMotivo[subcausa]),"@Minutos",CALCULATE([Minutos de paro]))
  RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))),
  VAR Causas = ADDCOLUMNS(ALLSELECTED(DimMotivo[causa]),"@Minutos",[Minutos de paro])
- RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos]))))
+ RETURN IF(NOT ISBLANK(Actual),DIVIDE(SUMX(FILTER(Causas,[@Minutos]>=Actual),[@Minutos]),SUMX(Causas,[@Minutos])))))
 
 [Disponibilidad mostrada] =
 IF(ISBLANK([Disponibilidad %]),"Sin planificación",FORMAT([Disponibilidad %],"0.0%"))
@@ -109,4 +112,4 @@ DIVIDE([Pacas]-[Pacas año anterior],[Pacas año anterior])
 IF(NOT HASONEVALUE(DimFecha[anio]),"Selecciona un año",IF(ISBLANK([Pacas año anterior]),"Sin comparativo",FORMAT([Pacas año anterior],"#,0")))
 
 [Variación interanual mostrada] =
-IF(NOT HASONEVALUE(DimFecha[anio]),"Selecciona un año",IF(ISBLANK([Variación interanual pacas %]),"Sin comparativo",FORMAT([Variación interanual pacas %],"0.0%")))
+(IF(NOT HASONEVALUE(DimFecha[anio]),"Selecciona un año",IF(ISBLANK([Variación interanual pacas %]),"Sin comparativo",FORMAT([Variación interanual pacas %],"0.0%")))) & IF(HASONEVALUE(DimFecha[anio]) && SELECTEDVALUE(DimFecha[anio])=2025," (2025 parcial)","")

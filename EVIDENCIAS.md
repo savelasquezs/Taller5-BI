@@ -1,6 +1,6 @@
 # Evidencias para el informe
 
-Las capturas de las partes 1–3 siguientes corresponden a la instalación local anterior a Docker. Los nuevos pantallazos del despliegue se añaden por separado: una comprobación por API o un log no se presenta como captura de pantalla.
+Las capturas de las partes 1–2 y los dos tableros Grafana iniciales conservan la instalación anterior. Las cuatro páginas Power BI siguientes y el apartado Docker muestran la entrega actual; los logs y comprobaciones por API se identifican por separado.
 
 ## Parte 1 · 1. Esquema relacional
 
@@ -38,32 +38,71 @@ El tablero histórico conserva los totales de producción y ordena las causas po
 
 ## Parte 3 · Power BI: producción
 
-Se importaron las vistas de PostgreSQL y se guardó `powerbi/Taller5.pbix` con datos reales. La página permite filtrar producción por máquina, año y referencia, y revisar su evolución mensual. Los totales coinciden con la base y el filtro Vinilos_1 devuelve 994 producciones y 100.046 pacas.
+Se importaron las vistas de PostgreSQL Docker y se guardó **`powerbi/Taller5_Docker.pbix`** con datos reales. La página permite filtrar producción por máquina, año y referencia, y revisar su evolución mensual. Los totales coinciden con la base y el filtro Vinilos_1 devuelve 994 producciones y 100.046 pacas.
 
-![Producción histórica](<evidencias/parte3/powerbi/Producción histórica.png>)
+![Producción histórica en Docker](evidencias/docker/powerbi/01_produccion.png)
 
 ## Parte 3 · Power BI: Pareto
 
 El gráfico ordena los motivos de paro de mayor a menor duración y muestra su porcentaje acumulado. Ayuda a priorizar la revisión de las pérdidas; no demuestra por sí solo la causa raíz. Los 16.452 paros conservan sus 502.924,10 minutos registrados.
 
-![Paros y Pareto](<evidencias/parte3/powerbi/Paros y Pareto.png>)
+![Paros y Pareto en Docker](evidencias/docker/powerbi/02_paros.png)
 
 ## Parte 3 · Power BI: OEE
 
 La disponibilidad reconstruida del Excel es 84,13 %, con 4.752 registros válidos y 98,8 % de cobertura. El 77,97 % corresponde a tiempo sin paros sobre horas registradas, con la fórmula original. Calidad y OEE completo siguen pendientes: no se inventaron unidades buenas ni se confirmó la vigencia del catálogo.
 
-![OEE y calidad de datos](<evidencias/parte3/powerbi/OEE y calidad de datos.png>)
+![OEE y calidad de datos en Docker](evidencias/docker/powerbi/03_oee.png)
 
 ## Parte 3 · Power BI: parámetros por período
 
 Se revisaron 142 combinaciones de mes y máquina. La página muestra los parámetros nominales y los 626 registros cuyo rendimiento diagnóstico supera el 100 %. Se conservan para revisión, sin recortar valores ni usarlos como OEE. El modelo antiguo y el catálogo discrepan sin fechas de vigencia.
 
-![Parámetros por período](<evidencias/parte3/powerbi/Parámetros por período.png>)
+![Parámetros por período en Docker](evidencias/docker/powerbi/04_parametros.png)
 
 Las decisiones y cifras completas están en `DECISIONES_ETL.md`, `PUESTA_EN_MARCHA.md` y `PARTE3.md`. Las comprobaciones están en `logs/`.
 
 ## Docker · comprobaciones registradas
 
-El arranque limpio recuperó 4.809 producciones y 16.452 paros; la carga repetida reconoció todo sin cambios. Las 21 pruebas del ETL pasaron. `logs/docker/verificacion.json` registra 28 consultas de paneles válidas, 65 motivos únicos y acceso BI sin escritura; `logs/docker/prueba_desde_cero/` conserva la prueba independiente. Estos son registros técnicos; las nuevas capturas deben mostrar el despliegue y la reproducción/alerta observados.
+El arranque limpio recuperó 4.809 producciones y 16.452 paros; la carga repetida reconoció todo sin cambios. Las 21 pruebas del ETL pasaron. `logs/docker/verificacion.json` registra 29 consultas de paneles válidas, 65 motivos únicos y acceso BI sin escritura; `logs/docker/prueba_desde_cero/` conserva la prueba independiente. La importación se verificó también en el motor nativo de Power BI: ocho tablas, 36 medidas, once relaciones y totales coincidentes (`logs/docker/verificacion_powerbi.json`). Las capturas siguientes muestran el despliegue y la demostración observados.
 
 La arquitectura compacta está en `docs/arquitectura.svg`; representa Docker, las aplicaciones del host y la reproducción separada. No corresponde a una captura de una aplicación.
+
+
+## Docker · reproducción histórica
+
+Grafana recibe cada minuto un registro histórico real, conservando su ID y fecha original. La hora virtual y la emisión están separadas; no se inventó producción ni calidad.
+
+![Reproducción histórica en Docker](evidencias/13_grafana_docker_demo.png)
+
+## Docker · alerta activa
+
+El registro reproducido supera 60 minutos de paro y activa la regla DEMO. La API confirmó el estado activo a las 23:15:47 del 4 de noviembre de 2026 (Colombia); el umbral es didáctico.
+
+![Alerta DEMO activa](evidencias/14_grafana_docker_alerta_activa.png)
+
+## Docker · alerta recuperada
+
+El siguiente registro queda bajo el umbral y la alerta se recupera. La API confirmó la recuperación a las 23:16:37; las muestras están en `logs/docker/alerta_demo.json`.
+
+![Alerta DEMO recuperada](evidencias/15_grafana_docker_alerta_recuperada.png)
+
+## Docker · contenedores
+
+El despliegue reúne PostgreSQL, ETL y Grafana; el perfil opcional añade la reproducción. Power BI y DBeaver se ejecutan en Windows y consultan la base local de Docker.
+
+![Contenedores del taller](evidencias/16_docker_contenedores.png)
+
+
+## Power BI · comparativo 2025
+
+El año 2025 tiene 25.496 pacas frente a 137.953 en 2024: −81,5 %. Se indica **2025 parcial** porque el histórico termina el 28 de marzo; no representa períodos de igual duración.
+
+![Comparativo 2025 parcial](evidencias/docker/powerbi/06_comparativo_2025.png)
+
+
+## Power BI · desglose por subcódigo
+
+En el nivel de subcódigo, el acumulado se calcula sobre la selección y conserva los filtros externos. Para interpretar el Pareto se comparan motivos ordenados por minutos; expandir los códigos padre agrupa la presentación. Los totales permanecen conciliados con SQL.
+
+![Desglose por subcódigo](evidencias/docker/powerbi/05_desglose_subcodigos.png)

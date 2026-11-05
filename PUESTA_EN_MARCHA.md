@@ -43,7 +43,7 @@ Se ejecutó `05_modelo_analitico.sql` antes de habilitar la publicación del est
 
 Los tableros, las medidas DAX, las decisiones analíticas y los límites de los datos se describen en `PARTE3.md`. Grafana usa el puerto local `3001`; PostgreSQL conserva el `55439`. Las credenciales de lectura y de Grafana están fuera de la carpeta del taller, en `%USERPROFILE%\Taller5Datos`.
 
-Power BI quedó conectado y guardado en `powerbi/Taller5.pbix`, junto con su proyecto editable. La conexión usa el controlador PostgreSQL Unicode x64 17 y el DSN de usuario `Taller5BI`. Las ocho vistas se importaron y verificaron contra PostgreSQL; los resultados están en `logs/verificacion_powerbi.json`. Las descripciones y capturas para el informe se reúnen en `EVIDENCIAS.md`.
+En la instalación anterior, Power BI quedó guardado en `powerbi/Taller5.pbix`; se conserva como antecedente. La entrega final Docker es `powerbi/Taller5_Docker.pbix`. La conexión usa el controlador PostgreSQL Unicode x64 17 y el DSN de usuario `Taller5BI`. Las ocho vistas se importaron y verificaron contra PostgreSQL; los resultados están en `logs/verificacion_powerbi.json`. Las descripciones y capturas para el informe se reúnen en `EVIDENCIAS.md`.
 
 ## Recuperación de parámetros, 4 de noviembre
 
@@ -59,10 +59,12 @@ Se volvió a aplicar `05_modelo_analitico.sql` y se ampliaron las validaciones d
 
 Se comprobó el arranque independiente desde volúmenes nuevos con el proyecto `taller5-prueba`: cargó 4.809 producciones y 16.452 paros sin configuración manual de SQL. Se detuvo sin borrar los volúmenes. En el despliegue principal la repetición reconoció las 4.809 producciones sin cambios; pasaron las 21 pruebas del ETL. Evidencia: `logs/docker/prueba_desde_cero/`, `logs/docker/pruebas_etl.log` y `logs/docker/ultima_ejecucion.json`.
 
-La verificación de Docker contrastó totales, 65 claves únicas de motivo sin huérfanos, nombres analíticos seudonimizados y usuario BI sin escritura. Verificó 28 consultas de paneles y tres reglas de alerta saludables. Esto acredita consultas y configuración; la activación/recuperación de la alerta se documenta por separado cuando existe evidencia observada. Resultado: `logs/docker/verificacion.json`.
+La verificación de Docker contrastó totales, 65 claves únicas de motivo sin huérfanos, nombres analíticos seudonimizados y usuario BI sin escritura. Verificó 29 consultas de paneles y tres reglas de alerta saludables. La alerta DEMO se observó activa a las 23:15:47 y recuperada a las 23:16:37 (Colombia); muestras en `logs/docker/alerta_demo.json` y pantallazos en `evidencias/14_grafana_docker_alerta_activa.png` y `15_grafana_docker_alerta_recuperada.png`. Resultado general: `logs/docker/verificacion.json`.
 
 Las claves están en `.env`, excluido de Git. Los permisos de carga incluyen referencias a producción, necesarias para la tabla de control incremental. `down` conserva datos; `down -v` los eliminaría. Instrucciones de respaldo/restauración y conexión están en `README.md`.
 
 ## Comprobación de los documentos actualizados
 
 El Excel descargado nuevamente coincide byte a byte con la fuente del proyecto (SHA-256 `c7d7eabbd55844757c2be07bd61efcee9eb5e0b03aaf9fd76b798737a92d5c55`). Los PDF difieren en bytes, pero sus siete páginas tienen el mismo texto, imágenes decodificadas, contenido gráfico y tamaño; no hay anotaciones ni adjuntos. No se encontraron datos ni instrucciones nuevos en estos dos archivos.
+
+La importación Docker quedó verificada en el motor nativo de Power BI: ocho tablas, 36 medidas, once relaciones y totales 4.809/16.452. También se comprobaron el filtro de máquina, el detalle por subcódigo y el comparativo anual; 2025 está identificado como parcial. Evidencia: `logs/docker/verificacion_powerbi.json`. El archivo final `powerbi/Taller5_Docker.pbix` ya se guardó y se verificó también leyendo su modelo binario. `Taller5.pbix` se conserva como antecedente de la instalación anterior.

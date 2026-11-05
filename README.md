@@ -33,7 +33,7 @@ Instalar DBeaver Community en Windows; puede incluir Java. Conectar con la fila 
 
 Power BI también se ejecuta en Windows. Instalar PostgreSQL ODBC Unicode x64, crear el DSN de usuario **Taller5Docker** con el usuario de lectura y abrir `powerbi/Taller5.pbip`; pulsar **Actualizar**. En este equipo `python configurar_cliente.py` utiliza el controlador ya extraído en `%USERPROFILE%/Taller5Datos/ODBC`. En otro equipo crear el mismo DSN con el administrador ODBC de 64 bits.
 
-Ante el diálogo de credenciales ODBC, elegir **Default or Custom** y dejar vacía la cadena opcional. No es necesario publicar en Power BI Service. El proyecto PBIP/BIM/PBIR se versiona porque sus archivos de texto permiten revisar cambios; PBIX es una copia generada con datos y se entrega de forma privada.
+Ante el diálogo de credenciales ODBC, elegir **Default or Custom** y dejar vacía la cadena opcional. No es necesario publicar en Power BI Service. El proyecto PBIP/BIM/PBIR se versiona porque sus archivos de texto permiten revisar cambios; La entrega privada vigente es **`powerbi/Taller5_Docker.pbix`**, guardada y verificada con datos de Docker. `powerbi/Taller5.pbix` conserva la versión anterior y no es el archivo final. Ambos contienen datos y quedan fuera de Git.
 
 ## Demostración en vivo
 

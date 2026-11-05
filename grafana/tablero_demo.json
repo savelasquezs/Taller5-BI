@@ -111,8 +111,8 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "unit": "short",
-          "decimals": 1,
+          "unit": "none",
+          "decimals": 0,
           "color": {
             "mode": "palette-classic"
           }
@@ -162,8 +162,8 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "unit": "short",
-          "decimals": 1,
+          "unit": "none",
+          "decimals": 0,
           "color": {
             "mode": "palette-classic"
           }
@@ -259,7 +259,40 @@
             "mode": "palette-classic"
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "registro_id_origen"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pacas_producidas"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
       },
       "options": {
         "showHeader": true,
@@ -272,7 +305,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "taller5-postgres"
           },
-          "rawSql": "SELECT DISTINCT ON(maquina) maquina,fecha_original,registro_id_origen,minutos_paro_registrados,pacas_producidas,hora_virtual,emitido_en FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) ORDER BY maquina,evento_id DESC",
+          "rawSql": "SELECT DISTINCT ON(maquina) maquina,fecha_original::text AS fecha_original,registro_id_origen,minutos_paro_registrados,pacas_producidas,hora_virtual,emitido_en FROM demo.v_eventos WHERE maquina IN (SELECT maquina FROM bi.dim_maquina WHERE maquina_id IN (${maquina:csv})) ORDER BY maquina,evento_id DESC",
           "format": "table",
           "rawQuery": true,
           "editorMode": "code"
